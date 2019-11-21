@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Add Borrowers</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-inverse" style="background-color:rgb(26, 46, 90); ">
+	<!-- <nav class="navbar navbar-dark bg-full" style="background-color:rgb(26, 46, 90);">  -->
+	<div class="container-fluid">
+	    <div class="navbar-header">
+			<a style="color:#33FFF6;font-size: 25px;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif" class="navbar-brand" href="../">Library Management System</a>
+		</div>
+	    <ul class="nav navbar-nav">
+		  <li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../booksearch">Book Search</a></li>
+	      <li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../checkinbooks">Return</a></li>
+	      <li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../payfine">Pay Fine</a></li>
+	      <li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../addborrowers">Add Borrowers</a></li>
+	    </ul>
+	  </div>
+	</nav>
+	<section align="center">
+		<h1 style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color: crimson">Please fill the information below</h1>
+		<table align="center">
+			<form align="center" action="{% url 'addborrowers:index' %}" method="POST" class="form-inline">
+				<div class="form-group">
+					{% csrf_token %}
+					<tr>
+						<th style="padding:10px">Full Name</th>
+						<td><input type="text" placeholder="Enter Name" name="fname" class="form-control" required="1" /></td>
+					</tr>
+					<tr>
+						<th style="padding: 10px">SSN</th>
+						<td><input type="text" placeholder="Enter SSN" name="ssn" class="form-control" required="1" /></td>
+					</tr>
+					<tr>
+						<th style="padding: 10px">Address</th>
+						<td><input type="text" placeholder="Enter Address" name="address" class="form-control" required="1" /></td>
+					</tr>
+					<tr>
+						<th style="padding: 10px">Phone</th>
+						<td><input type="text" placeholder="Enter Phone" name="phone" class="form-control" required="1" /></td>
+					</tr>
+					<tr>
+						<td style="padding: 10px;font-family: Comic Sans MS !important" colspan="2" align="center"><input type="submit" class="btn btn-success" value="Add" name="addborrower"></td>
+					</tr>
+				</div>
+			</form>
+		</table>
+
+		{% if ssnexist %}
+			SSN already exists, please try again
+		{% else %}
+			{% if message %}
+				{{message}}
+			{% endif %}
+		{% endif %}
+	</section>
+</body>
+</html>

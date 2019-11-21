@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Library Management System</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	{% load staticfiles %}
+	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-dark bg-full" style="background-color:rgb(26, 46, 90);">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <a style="color:#33FFF6;font-size: 25px;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif" class="navbar-brand" href="../">Library Management System</a>
+	    </div>
+	    <ul class="nav navbar-nav">
+			<li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../booksearch">Book Search</a></li>
+			<li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../checkinbooks">Return</a></li>
+			<li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../payfine">Pay Fine</a></li>
+			<li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../addborrowers">Add Borrowers</a></li>
+	    </ul>
+	  </div>
+	</nav>
+	<section align = "center">
+		<p style = "font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif ,garamond,serif;color:azure ;font-size:35px;font-style:bold;">
+				Welcome to Library Management System
+		</p>
+		<img src="{% static 'homepage/images/6.jpg' %}" alt="Library Image" width="100%" height="100%">
+	</section>
+</body>
+</html>

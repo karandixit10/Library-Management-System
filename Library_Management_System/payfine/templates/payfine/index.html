@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pay Fine</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-inverse" style="background-color:rgb(26, 46, 90); ">
+	<div class="container-fluid">
+	    <div class="navbar-header">
+			<a style="color:#33FFF6;font-size: 25px;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif" class="navbar-brand" href="../">Library Management System</a>
+		</div>
+	    <ul class="nav navbar-nav">
+	      <li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../booksearch">Book Search</a></li>
+	      <li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../checkinbooks">Return</a></li>
+	      <li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../payfine">Pay Fine</a></li>
+	      <li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../addborrowers">Add Borrowers</a></li>
+	    </ul>
+	    <form action="{% url 'payfine:index' %}" method="post">
+			{% csrf_token %}
+			<input style="font-family: Comic Sans MS!important;font-size: medium" type="submit" value="Refresh Fines" class="btn btn-danger navbar-btn" name="refreshfines">
+		</form>
+	  </div>
+	</nav>
+	<section align = "center">
+		<h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;color: crimson">
+			Enter Card Number, Name or SSN
+		</h1>
+
+		<form action="{% url 'payfine:index' %}" method="post" class="form-inline">
+			<div class="form-group">
+				{% csrf_token %}
+				<input type="text" class="form-control" name="searchfines" placeholder="Enter Card No,Name or SSN"/>
+				<input type="submit" style="font-family: Comic Sans MS !important" class="btn btn-success" name="searchfinesbtn" value="Search">
+			</div>
+		</form>
+
+		{% if fines %}	
+			<div class="container">
+				<h3>Heres what we found</h3>
+				<table class="table table-striped">
+				<tr>
+					<th><center>Card Number</center></th>
+					<th><center>SSN</center></th>
+					<th><center>Full Name</center></th>
+					<th><center>Fine Amount</center></th>
+					<th><center>Pay</center></th>
+				</tr>
+				{% for fine in fines %}
+				<tr>
+					<td>{{ fine.0 }}</td>
+					<td>{{ fine.1 }}</td>
+					<td>{{ fine.2 }}</td>
+					<td>{{ fine.3 }}</td>
+					<td>
+						<form action="{% url 'payfine:index' %}" method="POST">
+							{% csrf_token %}
+							<input type="hidden" name="cardnumber" value = {{fine.0}} />
+							<input type="submit" style="font-family: Comic Sans MS !important;" name="paybtn" class="btn btn-success" value="Pay" />
+						</form>
+					</td>
+				</tr>
+				{% endfor %}
+				</table>
+			</div>
+		{% else %}
+			{% if get == False %}
+				<h3>No Fines Available</h3>
+			{% endif %}
+		{% endif %}
+
+		<div id="loanInfo">
+			{% if message %}
+				{{ message }}
+			{% endif %}
+		</div>
+	</section>
+</body>
+</html>

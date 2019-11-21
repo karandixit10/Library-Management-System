@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Book Search</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-inverse" style="background-color:rgb(26, 46, 90); ">
+		<div class="container-fluid">
+	    <div class="navbar-header">
+			<a style="color:#33FFF6;font-size: 25px;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" class="navbar-brand" href="../">Library Management System</a>
+	    </div>
+	    <ul class="nav navbar-nav">
+	      <li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../booksearch">Book Search</a></li>
+	      <li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../checkinbooks">Return</a></li>
+	      <li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../payfine">Pay Fine</a></li>
+	      <li><a style="font-family: Comic Sans MS!important;font-size: medium" href="../addborrowers">Add Borrowers</a></li>
+	    </ul>
+	  </div>
+	</nav>
+	<section align="center">
+		<h1 style="color: crimson;font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">
+			Search for Books
+		</h1>
+
+		<form action="{% url 'booksearch:index' %}" class="form-inline" method="post">
+			<div class="form-group">
+				{% csrf_token %}
+				<input type="text" name="search" class="form-control" value="" placeholder="Enter Book Name " />
+				<input type="submit" value="Search" style="font-family: Comic Sans MS !important" class="btn btn-success" name="searchbtn">
+			</div>
+		</form>
+
+		{% if books %}	
+			<div class="container">
+				<h3>Here are all books available</h3>
+				<table class="table table-striped">
+					<tr>
+						<th><center>ISBN</center></th>
+						<th><center>Title</center></th>
+						<th><center>Author</center></th>
+						<th><center>Available</center></th>
+						<th><center>Borrow</center></th>
+					</tr>
+					{% for book in books %}
+					<tr>
+						<td>{{ book.0 }}</td>
+						<td>{{ book.1 }}</td>
+						<td>{{ book.2 }}</td>
+						<td>
+							{% if book.3 == 1 %}
+								Yes
+							{% else %}
+								No
+							{% endif %}
+						</td>
+						<td>
+							<form action="{% url 'booksearch:index' %}" method="POST">
+								{% csrf_token %}
+								<input type="hidden" name='cardno' id={{book.0}} />
+								<button onclick="askCardNo({{book.0}});" class="btn" name="checkout" type="submit">Borrow</button>
+							</form>
+						</td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		{% else %}
+			{% if get == False %}
+				<h3>No Books Available</h3>
+			{% endif %}
+		{% endif %}
+
+		<div id="loanInfo">
+			{% if message %}
+				{{ message }}
+			{% endif %}
+		</div>
+
+		<script type="text/javascript">
+			function askCardNo(isbn)
+			{
+				var card_no = prompt("Enter Card Number");
+				document.getElementById(isbn).value = card_no +','+isbn;
+			}
+		</script>
+	</section>
+</body>
+</html>
