@@ -20,7 +20,7 @@ def index(request):
 					comparision += " AND "
 				comparision += "(BkAthr.Isbn LIKE '"+keyword+"' OR BkAthr.Title LIKE '"+keyword+"' OR BkAthr.authors LIKE '"+keyword+"' OR BkAthr.Card_id LIKE '"+keyword+"' OR BkAthr.Bname LIKE '"+keyword+"' OR BkAthr.Ssn LIKE '"+keyword+"')"
 
-			query = "SELECT BkAthr.Isbn, BkAthr.Title, BkAthr.authors, BkAthr.Card_id, BkAthr.Bname, BkAthr.Ssn, BkAthr.Loan_id FROM (SELECT Book.Isbn, Book.Title, GROUP_CONCAT(Authors.Name) authors, Borrower.Card_id, Borrower.Bname, Borrower.Ssn, Book_Loans.Loan_id FROM Book,Title,Authors,Borrower,Book_Loans WHERE Book.Isbn = Title.Isbn AND Title.Author_id = Authors.Author_id AND Book.Isbn = Book_Loans.Isbn AND Borrower.Card_id = Book_Loans.Card_id AND Book_Loans.Date_in IS NULL GROUP BY Book.Isbn) AS BkAthr WHERE "+comparision
+			query = "SELECT BkAthr.Isbn, BkAthr.Title, BkAthr.authors, BkAthr.Card_id, BkAthr.Bname, BkAthr.Ssn, BkAthr.Loan_id FROM (SELECT Book.Isbn, Book.Title, GROUP_CONCAT(Authors.Name) authors, Borrower.Card_id, Borrower.Bname, Borrower.Ssn, Book_Loans.Loan_id FROM Book,Book_Authors,Authors,Borrower,Book_Loans WHERE Book.Isbn = Book_Authors.Isbn AND Book_Authors.Author_id = Authors.Author_id AND Book.Isbn = Book_Loans.Isbn AND Borrower.Card_id = Book_Loans.Card_id AND Book_Loans.Date_in IS NULL GROUP BY Book.Isbn) AS BkAthr WHERE "+comparision
 			cursor.execute(query)
 			books = cursor.fetchall()
 			return render(request,'checkinbooks/index.html',{'books':books,'message':message,'get':get})
@@ -36,7 +36,7 @@ def index(request):
 			days = cursor.fetchone()[0]
 
 			if(days > 0):
-				fine_amt = days*0.25
+				fine_amt = days*0.25;
 				message = "Your fine of amount "+str(fine_amt)+" is due "
 				query = "SELECT Paid FROM Fines WHERE Loan_id = '"+ loan_id +"' GROUP BY Loan_id"
 				cursor.execute(query)
