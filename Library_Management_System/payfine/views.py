@@ -20,7 +20,7 @@ def index(request):
 					comparision += " AND "
 				comparision += "(BrrFine.Card_id LIKE '"+keyword+"' OR BrrFine.Ssn LIKE '"+keyword+"' OR BrrFine.Bname LIKE '"+keyword+"')"
 
-			query = "SELECT BrrFine.Card_id, BrrFine.Ssn, BrrFine.Bname, BrrFine.Totalfine, BrrFine.Loan_id FROM (SELECT Borrower.Card_id, Borrower.Ssn, Borrower.Bname, SUM(Fines.Fine_amt) Totalfine, Book_Loans.Loan_id FROM Borrower,Book_Loans,Fines WHERE Borrower.Card_id = Book_Loans.Card_id AND Book_Loans.Loan_id = Fines.Loan_id AND Fines.Paid = '0' AND Book_Loans.Date_in IS NOT NULL GROUP BY Borrower.Card_id) AS BrrFine WHERE "+comparision
+			query = "SELECT BrrFine.Card_id, BrrFine.Ssn, BrrFine.Bname, BrrFine.Totalfine, BrrFine.Loan_id FROM (SELECT Borrower.Card_id, Borrower.Ssn, Borrower.Bname, SUM(Fines.Fine_amt) Totalfine, Book_Loans.Loan_id FROM Borrower,Book_Loans,Fines WHERE Borrower.Card_id = Book_Loans.Card_id AND Book_Loans.Loan_id = Fines.Loan_id AND Fines.Paid = '0' AND Book_Loans.Date_in IS NULL GROUP BY Borrower.Card_id) AS BrrFine WHERE "+comparision
 			cursor.execute(query)
 			print(query)
 			fines = cursor.fetchall()
@@ -45,9 +45,9 @@ def index(request):
 
 		elif('cardnumber' in request.POST):
 			cardnumber = request.POST['cardnumber']
-			query = "SELECT Loan_id FROM Book_Loans WHERE Date_in IS NOT NULL AND Card_id = '"+str(cardnumber)+"'"
+			query = "SELECT Loan_id FROM Book_Loans WHERE Date_in IS NULL AND Card_id = '"+str(cardnumber)+"'"
 			cursor.execute(query)
-			loanids = cursor.fetchall();
+			loanids = cursor.fetchall()
 			for loanid in loanids:
 				query = "UPDATE Fines SET Fines.Paid = '1' WHERE Fines.Loan_id = '"+str(loanid[0])+"' AND Fines.Paid = '0'"
 				cursor.execute(query)

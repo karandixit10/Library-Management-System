@@ -14,7 +14,7 @@ def createTableBook(conn):
     print("Created Table Book")
 
 
-def createTableBookAuthors(conn):
+def createTableBook_Authors(conn):
     cur = conn.cursor()
     query = 'CREATE TABLE Book_Authors(Author_id INT NOT NULL AUTO_INCREMENT, Isbn VARCHAR(10), CONSTRAINT BKAPK PRIMARY KEY(Author_id), CONSTRAINT BKAFK FOREIGN KEY(Isbn) REFERENCES Book(Isbn) ON DELETE SET NULL);'
     cur.execute(query)
@@ -52,7 +52,7 @@ cursor.execute("CREATE SCHEMA library;")
 cursor.execute("USE library;")
 
 createTableBook(myConnection)
-createTableBookAuthors(myConnection)
+createTableBook_Authors(myConnection)
 createTableAuthors(myConnection)
 createTableBorrower(myConnection)
 createTableBookLoans(myConnection)
